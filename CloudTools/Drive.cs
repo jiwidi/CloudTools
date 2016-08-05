@@ -20,7 +20,7 @@ namespace FLEXYGO
     class Drive  //CloudDocInterface
     {
         static string ClientId = "919235768362-6c75ihpgnu3r86c2ihuv99j65odg1ll5.apps.googleusercontent.com";
-        static string ClientSecret = "iq35Y8PmRBhnGGD4HH81cxtk";
+        static string ClientSecret = "huehuehue";
         static String APP_USER_AGENT = "Drive API Quickstart";
         static String[] SCOPES = new[] { DriveService.Scope.Drive };
         static UserCredential dbx;
