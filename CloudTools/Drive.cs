@@ -295,35 +295,47 @@ namespace FLEXYGO
         /// Permantly deletes a file
         /// </summary>
         /// <param name="fileID"></param>
-        public static void permantylyDeleteFile(DriveService service,string fileID)
+        public static Boolean permantylyDeleteFile(DriveService service,string fileID)
         {
-            var request = service.Files.Delete(fileID).Execute();
+            try
+            {
+                var request = service.Files.Delete(fileID).Execute();
+                return true;
+            }
+            catch(Exception e) { return false; }
         }
         /// <summary>
         /// Permantly deletes a folder
         /// </summary>
         /// <param name="folderID"></param>
-        public static void permantlyDeleteFolder(DriveService service,string folderID)
+        public static Boolean permantlyDeleteFolder(DriveService service,string folderID)
         {
-            var request = service.Files.Delete(folderID).Execute();
+            try { var request = service.Files.Delete(folderID).Execute(); return true; }
+            catch(Exception e) { return false; }
         }
         /// <summary>
         /// Moves a file by updating his parent list
         /// </summary>
         /// <param name="fileID"></param>
         /// <param name="newParent"></param>
-        public static void moveFile(DriveService service,string fileID,string newParent)
-        {
-            // First retrieve the file from the API.
-            Google.Apis.Drive.v3.Data.File body = service.Files.Get(fileID).Execute();
-            //Get Parents from the new parent
-            Google.Apis.Drive.v3.Data.File fileParent = service.Files.Get(newParent).Execute();
-            //update parents from the file to newparent+newparent.parents
-            var parents = fileParent.Parents;
-            parents.Add(newParent);
-            body.Parents = parents;
-            //update file
-            service.Files.Update(body, fileID);
+        public static Boolean moveFile(DriveService service,string fileID,string newParent)
+        {   try
+            {
+
+
+                // First retrieve the file from the API.
+                Google.Apis.Drive.v3.Data.File body = service.Files.Get(fileID).Execute();
+                //Get Parents from the new parent
+                Google.Apis.Drive.v3.Data.File fileParent = service.Files.Get(newParent).Execute();
+                //update parents from the file to newparent+newparent.parents
+                var parents = fileParent.Parents;
+                parents.Add(newParent);
+                body.Parents = parents;
+                //update file
+                service.Files.Update(body, fileID);
+                return true;
+            }
+            catch(Exception e) { return false; }
 
         }
      }

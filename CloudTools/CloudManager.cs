@@ -79,6 +79,37 @@ namespace FLEXYGO
             }
             catch(Exception e) { return null; }
         }
+        public Boolean deleteFolder(Object auntenti, string folderIDorPATH)
+        {
+            try
+            {
+                if (auntenti == dbx) { return dropbox.deleteFolder(dbx, folderIDorPATH); }
+                else if (auntenti == service) { return Drive.permantlyDeleteFolder(service, folderIDorPATH); }
+            }
+            catch (Exception e) { return false; }
+            return false;
+            
+        }
+        public Boolean deleteFile(Object auntenti, string fileIDorPATH)
+        {
+            try
+            {
+                if (auntenti == dbx) { return dropbox.deleteFile(dbx, fileIDorPATH); }
+                else if (auntenti == service) { return Drive.permantlyDeleteFolder(service, fileIDorPATH); }
+            }
+            catch (Exception e) { return false; }
+            return false;
+        }
+        public Boolean moveFileOrFolder(Object auntenti, string pathDBFROMorFILEID, string pathDBTOorNEWPARENT)
+        {
+            try
+            {
+                if (auntenti == dbx) { return dropbox.moveMetadata(dbx, pathDBFROMorFILEID,pathDBTOorNEWPARENT); }
+                else if (auntenti == service) { return Drive.moveFile(service, pathDBFROMorFILEID, pathDBTOorNEWPARENT); }
+            }
+            catch (Exception e) { return false; }
+            return false;
+        }
 
     }
 }
