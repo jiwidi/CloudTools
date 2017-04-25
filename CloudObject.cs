@@ -148,7 +148,7 @@ namespace CloudTools
             VideoMediaMetadata = drive.VideoMediaMetadata;
             ViewedByMe = drive.ViewedByMe;
             ViewedByMeTime = drive.ViewedByMeTime;
-            ViewedByMeTimeRaw = ViewedByMeTimeRaw;
+            ViewedByMeTimeRaw = drive.ViewedByMeTimeRaw;
             ViewersCanCopyContent = drive.ViewersCanCopyContent;
             WebContentLink = drive.WebContentLink;
             WebViewLink = drive.WebViewLink;

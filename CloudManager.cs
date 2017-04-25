@@ -13,7 +13,7 @@ using Dropbox.Api;
 using Nito.AsyncEx;
 using System.Windows.Forms;
 using Google.Apis.Plus.v1.Data;
-using Google.Apis.Util.Store;
+
 
 using Google.Apis.Plus.v1;
 
@@ -32,7 +32,7 @@ namespace CloudTools
 
 
 
-        public CloudManager(string user,string jsonpath)//Drive
+        public CloudManager(string user,string jsonpath = "")//Drive
         {
             UserCredential credential = Drive.GetGoogleOAuthCredential( user,@jsonpath);
             service = Drive.getService(credential);
@@ -55,28 +55,28 @@ namespace CloudTools
                 else if(service!=null) { return Drive.downloadBinaryFile(service, fileNameOrID, pathTosave); }
                 return true;
             }
-            catch(Exception e) { return false; }
+            catch(Exception) { return false; }
         }
         public void test()
         {
             Console.WriteLine(service.ApiKey + service.ApplicationName);
         }
-        public Boolean updateFile(string filepath, string pathTosaveDBorPARENTID, string nameFinal)
+        public Boolean updateFile(string filepath, string pathTosaveDBorPARENTID, string nameFinal,string mimetype="")
         {
             try
             {
                 if (dbx != null) { return dropbox.uploadFile(dbx, filepath, pathTosaveDBorPARENTID, nameFinal); }
-                else if (service != null) { return Drive.uploadFile(service, filepath, pathTosaveDBorPARENTID, nameFinal); }
+                else if (service != null) { return Drive.uploadFile(service, filepath, pathTosaveDBorPARENTID, nameFinal,mimetype); }
                 return true;
             }
-            catch (Exception e) { return false; }
+            catch (Exception) { return false; }
         }
-        public Boolean uploadFile(string filePath, string nameFinal, string IDParentorFolderDropbox = "")
+        public Boolean uploadFile(string filePath, string nameFinal, string IDParentorFolderDropbox = "",string mimetype="")
         {
             try
             {
                 if (dbx!=null) { dropbox.uploadFile(dbx,filePath,IDParentorFolderDropbox,nameFinal); }
-                else if (service!=null) { Drive.uploadFile(service, filePath, IDParentorFolderDropbox, nameFinal); }
+                else if (service!=null) { Drive.uploadFile(service, filePath, IDParentorFolderDropbox, nameFinal,mimetype); }
                 return true;
             }
             catch (Exception e) { Console.WriteLine(e.ToString()); return false; }
@@ -90,7 +90,7 @@ namespace CloudTools
                 else if (service!=null) { Drive.createDirectory(service, name, parentIDORdropboxPath); }
                 return true;
             }
-            catch(Exception e) { return false; }
+            catch(Exception) { return false; }
         }
         public string getMimeType(string filename)
         {
@@ -104,7 +104,17 @@ namespace CloudTools
                 else if (service!=null) { return Drive.getFilesFromParent(service, folderDBorPARENTID); }
                 return null;
             }
-            catch(Exception e) { return null; }
+            catch(Exception) { return null; }
+        }
+        public List<CloudObject> getFilesFiltered(string filter)
+        {
+            try
+            {
+                if (dbx != null) { return null; }
+                else if (service != null) { return Drive.getFilesFiltered(service, filter); }
+                return null;
+            }
+            catch (Exception) { return null; }
         }
         public List<CloudObject> getALLfiles()
         {
@@ -120,7 +130,7 @@ namespace CloudTools
                 if (dbx!=null) { return dropbox.deleteFolder(dbx, folderIDorPATH); }
                 else if (service!=null) { return Drive.permantlyDeleteFolder(service, folderIDorPATH); }
             }
-            catch (Exception e) { return false; }
+            catch (Exception) { return false; }
             return false;
             
         }
@@ -131,7 +141,7 @@ namespace CloudTools
                 if (dbx != null) { return dropbox.deleteFile(dbx, fileIDorPATH); }
                 else if (service != null) { return Drive.permantlyDeleteFolder(service, fileIDorPATH); }
             }
-            catch (Exception e) { return false; }
+            catch (Exception) { return false; }
             return false;
         }
         public Boolean moveFileOrFolder(string pathDBFROMorFILEID, string pathDBTOorNEWPARENT)
@@ -141,7 +151,7 @@ namespace CloudTools
                 if (dbx != null) { return dropbox.moveMetadata(dbx, pathDBFROMorFILEID,pathDBTOorNEWPARENT); }
                 else if (service != null) { return Drive.moveFile(service, pathDBFROMorFILEID, pathDBTOorNEWPARENT); }
             }
-            catch (Exception e) { return false; }
+            catch (Exception) { return false; }
             return false;
         }
         public Boolean emptyTrash()
@@ -152,8 +162,8 @@ namespace CloudTools
                 else if (service != null) {Drive.emptyTrash(service) ; }
                 return true;
             }
-            catch (Exception e) { return false; }
-            return false;
+            catch (Exception) { return false; }
+            
         }
         public string getName()
         {
@@ -191,6 +201,25 @@ namespace CloudTools
             else if (serviceplus!=null) { return Drive.getCurrentLocation(serviceplus); }
             return string.Empty;
         }
+        public ulong? getFreeSpace()
+        {
+            if (dbx != null) { return (dropbox.totalSpace(dbx) - dropbox.usedEspace(dbx)); }
+            else if (service != null) { return (ulong) (Drive.totalSpace(service)- Drive.usedSpace(service)); }
+            return null;
+        }
+        public ulong? getUsedSpace()
+        {
+            if (dbx != null) { return (dropbox.usedEspace(dbx)); }
+            else if (service != null) { return (ulong)Drive.usedSpace(service); }
+            return null;
+        }
+        public ulong? getTotalSpace()
+        {
+            if (dbx != null) { return (dropbox.totalSpace(dbx)); }
+            else if (service != null) { return (ulong)Drive.totalSpace(service); }
+            return null;
+        }
+
 
     }
         

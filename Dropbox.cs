@@ -34,6 +34,11 @@ namespace CloudTools
         /// </summary>
         /// <param name="firstHalfToken"></param>
         /// <returns>boolean(succes,fail)</returns>
+        public static DropboxClient getServerUser(string token)
+        {
+            var client = new DropboxClient(token);
+            return client;
+        }
         public static DropboxClient secondAuthUser(string firstHalfToken)
         {
             try
@@ -363,12 +368,22 @@ namespace CloudTools
             return link.Link;
 
         }
+        /// <summary>
+        /// Get the currently used space of the user
+        /// </summary>
+        /// <param name="dbx"></param>
+        /// <returns></returns>
         public static ulong usedEspace(DropboxClient dbx)
         {
             var esp = dbx.Users.GetSpaceUsageAsync();
             return esp.Result.Used;
 
         }
+        /// <summary>
+        /// Get the current totalSpace of the user
+        /// </summary>
+        /// <param name="dbx"></param>
+        /// <returns></returns>
         public static ulong totalSpace(DropboxClient dbx)
         {
             var esp = dbx.Users.GetSpaceUsageAsync();
