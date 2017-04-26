@@ -31,7 +31,11 @@ namespace CloudTools
         // see https://developers.google.com/identity/sign-in/web/ to add google singin to a website so 
 
 
-
+        /// <summary>
+        /// CloudManager constructor for drive service
+        /// </summary>
+        /// <param name="user"></param>
+        /// <param name="jsonpath"></param>
         public CloudManager(string user,string jsonpath = "")//Drive
         {
             UserCredential credential = Drive.GetGoogleOAuthCredential( user,@jsonpath);
@@ -39,14 +43,29 @@ namespace CloudTools
             serviceplus = Drive.getPlusService(credential);
             
         }
+        /// <summary>
+        /// CloudManager constructor for dropbox, it needs the Uri from getFirstHalfToken
+        /// </summary>
+        /// <param name="firstHalfToken"></param>
         public CloudManager(string firstHalfToken)//Dropbox auth builder, need the uri from getFirstHalfToken
         {
             dbx = dropbox.secondAuthUser(firstHalfToken);
         }
+        /// <summary>
+        /// Auxiliar method for the  CloudManager dropbox constructor
+        /// </summary>
+        /// <returns></returns>
         public static Uri getFirstHalfToken()
         {
             return dropbox.firstAuthUser();
         }
+        /// <summary>
+        /// Download a file
+        /// </summary>
+        /// <param name="fileNameOrID"></param>
+        /// <param name="pathTosave"></param>
+        /// <param name="folderDropbox"></param>
+        /// <returns></returns>
         public Boolean downloadFile(string fileNameOrID,string pathTosave, string folderDropbox = "")
         {
             try
@@ -57,10 +76,21 @@ namespace CloudTools
             }
             catch(Exception) { return false; }
         }
+        /// <summary>
+        /// Test method
+        /// </summary>
         public void test()
         {
             Console.WriteLine(service.ApiKey + service.ApplicationName);
         }
+        /// <summary>
+        /// Update a file
+        /// </summary>
+        /// <param name="filepath"></param>
+        /// <param name="pathTosaveDBorPARENTID"></param>
+        /// <param name="nameFinal"></param>
+        /// <param name="mimetype"></param>
+        /// <returns></returns>
         public Boolean updateFile(string filepath, string pathTosaveDBorPARENTID, string nameFinal,string mimetype="")
         {
             try
@@ -71,6 +101,14 @@ namespace CloudTools
             }
             catch (Exception) { return false; }
         }
+        /// <summary>
+        /// Upload a file, it requires id of parent for drive or parentfoldername for dropbox
+        /// </summary>
+        /// <param name="filePath"></param>
+        /// <param name="nameFinal"></param>
+        /// <param name="IDParentorFolderDropbox"></param>
+        /// <param name="mimetype"></param>
+        /// <returns></returns>
         public Boolean uploadFile(string filePath, string nameFinal, string IDParentorFolderDropbox = "",string mimetype="")
         {
             try
@@ -81,7 +119,12 @@ namespace CloudTools
             }
             catch (Exception e) { Console.WriteLine(e.ToString()); return false; }
         }
-
+        /// <summary>
+        /// Create a folder, it requires id of parent for drive or parentfoldername for dropbox
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="parentIDORdropboxPath"></param>
+        /// <returns></returns>
         public Boolean createFolder(string name, string parentIDORdropboxPath)
         {
             try
@@ -92,10 +135,24 @@ namespace CloudTools
             }
             catch(Exception) { return false; }
         }
+        /// <summary>
+        /// Get MimeType from a file (only drive)
+        /// </summary>
+        /// <param name="filename"></param>
+        /// <returns></returns>
         public string getMimeType(string filename)
         {
-           return  Drive.GetMimeType(filename);
+            if (service != null)
+            {
+                return Drive.GetMimeType(filename);
+            }
+            else return "";
         }
+        /// <summary>
+        /// Get's all files/folders  under a folder, it requires id of parent for drive or parentfoldername for dropbox
+        /// </summary>
+        /// <param name="folderDBorPARENTID"></param>
+        /// <returns></returns>
         public List<CloudObject> getFilesUnder(string folderDBorPARENTID)
         {
             try
@@ -106,6 +163,11 @@ namespace CloudTools
             }
             catch(Exception) { return null; }
         }
+        /// <summary>
+        /// Returns drive files filtered by using the string as parameter, see https://developers.google.com/drive/v3/web/search-parameters for more info
+        /// </summary>
+        /// <param name="filter"></param>
+        /// <returns></returns>
         public List<CloudObject> getFilesFiltered(string filter)
         {
             try
@@ -116,13 +178,21 @@ namespace CloudTools
             }
             catch (Exception) { return null; }
         }
+        /// <summary>
+        /// Get's all files/folders from the root
+        /// </summary>
+        /// <returns></returns>
         public List<CloudObject> getALLfiles()
         {
             if (dbx!=null) { return dropbox.retrieveAllFilesUnder(dbx, string.Empty); }
             else if (service!=null) { return Drive.getAllFiles(service); }
             throw new System.ArgumentException("Invalid parameters");
         }
-      
+        /// <summary>
+        /// Delete a folder
+        /// </summary>
+        /// <param name="folderIDorPATH"></param>
+        /// <returns></returns>
         public Boolean deleteFolder(string folderIDorPATH)
         {
             try
@@ -134,6 +204,11 @@ namespace CloudTools
             return false;
             
         }
+        /// <summary>
+        /// Delete a file
+        /// </summary>
+        /// <param name="fileIDorPATH"></param>
+        /// <returns></returns>
         public Boolean deleteFile( string fileIDorPATH)
         {
             try
@@ -144,6 +219,12 @@ namespace CloudTools
             catch (Exception) { return false; }
             return false;
         }
+        /// <summary>
+        /// Move a file or folder, it requires id of parent for drive or parentfoldername for dropbox
+        /// </summary>
+        /// <param name="pathDBFROMorFILEID"></param>
+        /// <param name="pathDBTOorNEWPARENT"></param>
+        /// <returns></returns>
         public Boolean moveFileOrFolder(string pathDBFROMorFILEID, string pathDBTOorNEWPARENT)
         {
             try
@@ -154,6 +235,10 @@ namespace CloudTools
             catch (Exception) { return false; }
             return false;
         }
+        /// <summary>
+        /// Empty the trash
+        /// </summary>
+        /// <returns></returns>
         public Boolean emptyTrash()
         {
             try
@@ -165,54 +250,91 @@ namespace CloudTools
             catch (Exception) { return false; }
             
         }
+        /// <summary>
+        /// Get's the user name
+        /// </summary>
+        /// <returns></returns>
         public string getName()
         {
             if (dbx!=null) { return dropbox.getName(dbx); }
             else if (serviceplus!=null) { return Drive.getName(serviceplus); }
             return string.Empty;
         }
+        /// <summary>
+        /// Get's the user email
+        /// </summary>
+        /// <returns></returns>
         public string getEmail()
         {
             if (dbx!=null) { return dropbox.getEmail(dbx); }
             else if (serviceplus!=null) { return Drive.getEmail(serviceplus); }
             return string.Empty;
         }
+        /// <summary>
+        /// Get's the user AccountId
+        /// </summary>
+        /// <returns></returns>
         public string getAccountID()
         {
             if (dbx!=null) { return dropbox.getAccountID(dbx); }
             else if (serviceplus!=null) { return Drive.getAccountId(serviceplus); }
             return string.Empty;
         }
+        /// <summary>
+        /// Get's the user photoUrl
+        /// </summary>
+        /// <returns></returns>
         public string getPhotoUrl()
         {
             if (dbx!=null) { return dropbox.getPhotoUri(dbx); }
             else if (serviceplus!=null) { return Drive.getPhotoUrl(serviceplus); }
             return string.Empty;
         }
+        /// <summary>
+        /// Check if the user has verified his account
+        /// </summary>
+        /// <returns></returns>
         public bool? getVerified()
         {
             if (dbx!=null) { return dropbox.getVerifiedAccount(dbx); }
             else if (serviceplus!=null) { return Drive.verfiedAccount(serviceplus); }
             return false;
         }
+        /// <summary>
+        /// Get's the user location
+        /// </summary>
+        /// <returns></returns>
         public string getLocation()
         {
             if (dbx!=null) { return dropbox.getCountry(dbx); }
             else if (serviceplus!=null) { return Drive.getCurrentLocation(serviceplus); }
             return string.Empty;
+
         }
+        /// <summary>
+        /// Get's the user free space
+        /// </summary>
+        /// <returns></returns>
         public ulong? getFreeSpace()
         {
             if (dbx != null) { return (dropbox.totalSpace(dbx) - dropbox.usedEspace(dbx)); }
             else if (service != null) { return (ulong) (Drive.totalSpace(service)- Drive.usedSpace(service)); }
             return null;
         }
+        /// <summary>
+        /// Get's the user used space
+        /// </summary>
+        /// <returns></returns>
         public ulong? getUsedSpace()
         {
             if (dbx != null) { return (dropbox.usedEspace(dbx)); }
             else if (service != null) { return (ulong)Drive.usedSpace(service); }
             return null;
         }
+        /// <summary>
+        /// Get's the user total space
+        /// </summary>
+        /// <returns></returns>
         public ulong? getTotalSpace()
         {
             if (dbx != null) { return (dropbox.totalSpace(dbx)); }
