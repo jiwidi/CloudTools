@@ -13,8 +13,8 @@ namespace CloudTools
      public class dropbox //: CloudDocInterface
     {
         //public DropboxClient dbx; //DropboxClient needed to work in almost every method, instanciated by secondAuthUser(token got from the url of firstAuthUser)
-        static string ClientId = "3dj3sbjdiyentjq"; //App key
-        static string ClientSecret = "94siutu71pyz2ad"; //App secret key
+        static string ClientId = ""; //App key
+        static string ClientSecret = ""; //App secret key
 
 
 
