@@ -46,7 +46,10 @@ namespace CloudTools
                 var dbx = new DropboxClient(secondAuthUserAux(firstHalfToken).Result);
                 return dbx;
             }
-            catch (Exception e) { return null; }
+            catch (Exception e) {
+                Console.WriteLine(e.Message);
+                return null;
+            }
 
         }
         /// <summary>
@@ -138,7 +141,10 @@ namespace CloudTools
                 }
                 return true;
             }
-            catch (Exception e) { return false; }
+            catch (Exception e) {
+                Console.WriteLine(e.Message);
+                return false;
+            }
         }
         /// <summary>
         /// Uploads a file from your pc to your dropbox, filePath=complete path of the file foñderDB=target folder on dropbox nameFinal=name of the file be saved with 
@@ -178,7 +184,10 @@ namespace CloudTools
                 }
                 return true;
             }
-            catch (Exception e) { return false; }
+            catch (Exception e) {
+                Console.WriteLine(e.Message);
+                return false;
+            }
         }
         /// <summary>
         /// Create a folder by the full path of the folder you want to create
@@ -203,7 +212,10 @@ namespace CloudTools
                 var folder = await dbx.Files.CreateFolderAsync(path);
                 return true;
             }
-            catch (Exception e) { return false; }
+            catch (Exception e) {
+                Console.WriteLine(e.Message);
+                return false;
+            }
         }
         /// <summary>
         /// Move metadata from a specific path(full path) to another, doesn't matter if it's file or folder
@@ -232,7 +244,10 @@ namespace CloudTools
                 var move = await dbx.Files.MoveAsync(new Dropbox.Api.Files.RelocationArg(pathFrom, pathTo));
                 return true;
             }
-            catch (Exception e) { return false; }
+            catch (Exception e) {
+                Console.WriteLine(e.Message);
+                return false;
+            }
         }
         /// <summary>
         /// Deletes a folder given his full path
@@ -269,7 +284,10 @@ namespace CloudTools
                 await dbx.Files.DeleteAsync(new Dropbox.Api.Files.DeleteArg(path));
                 return true;
             }
-            catch (Exception e) { return false; }
+            catch (Exception e) {
+                Console.WriteLine(e.Message);
+                return false;
+            }
         }
         /// <summary>
         /// Get user name

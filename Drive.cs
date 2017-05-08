@@ -87,7 +87,6 @@ namespace CloudTools
                 // If exception is caught, then it is not a base64 encoded string
                 return false;
             }
-            return true;
         }
         /// <summary>
         /// Uploads a file
@@ -357,7 +356,10 @@ namespace CloudTools
                 var request = service.Files.Delete(fileID).Execute();
                 return true;
             }
-            catch (Exception e) { return false; }
+            catch (Exception e) {
+                Console.WriteLine(e.Message);
+                return false;
+            }
         }
         /// <summary>
         /// Permantly deletes a folder
@@ -366,7 +368,10 @@ namespace CloudTools
         public static Boolean permantlyDeleteFolder(DriveService service, string folderID)
         {
             try { var request = service.Files.Delete(folderID).Execute(); return true; }
-            catch (Exception e) { return false; }
+            catch (Exception e) {
+                Console.WriteLine(e.Message);
+                return false;
+            }
         }
         /// <summary>
         /// Moves a file by updating his parent list
@@ -390,7 +395,10 @@ namespace CloudTools
                 service.Files.Update(body, fileID);
                 return true;
             }
-            catch (Exception e) { return false; }
+            catch (Exception e) {
+                Console.WriteLine(e.Message);
+                return false;
+            }
 
         }
         public static string getToken(DriveService service)
@@ -450,6 +458,7 @@ namespace CloudTools
 
             catch (Exception e)
             {
+                Console.WriteLine(e.Message);
                 return null;
             }
         }
@@ -464,6 +473,7 @@ namespace CloudTools
 
             catch (Exception e)
             {
+                Console.WriteLine(e.Message);
                 return null;
             }
         }
@@ -478,6 +488,7 @@ namespace CloudTools
 
             catch (Exception e)
             {
+                Console.WriteLine(e.Message);
                 return null;
             }
         }
@@ -492,6 +503,7 @@ namespace CloudTools
 
             catch (Exception e)
             {
+                Console.WriteLine(e.Message);
                 return null;
             }
         }
