@@ -104,6 +104,8 @@ namespace CloudTools
         public CloudObject(Google.Apis.Drive.v3.Data.File drive)
         {
             Name = drive.Name;
+            isDrive = true;
+            isDropbox = false;
             originalFileName = drive.OriginalFilename;
             Capabilities = drive.Capabilities;
             ContentHints = drive.ContentHints;

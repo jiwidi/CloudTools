@@ -36,7 +36,7 @@ namespace CloudTools
         /// </summary>
         /// <param name="user"></param>
         /// <param name="jsonpath"></param>
-        public CloudManager(string user,string jsonpath = "")//Drive
+        public CloudManager(string user,string jsonpath)//Drive
         {
             UserCredential credential = Drive.GetGoogleOAuthCredential( user,@jsonpath);
             service = Drive.getService(credential);

@@ -21,8 +21,8 @@ namespace CloudTools
 {
     public class Drive  //CloudDocInterface
     {
-        static string ClientId = "";
-        static string ClientSecret = "";
+        static string ClientId = "919235768362-6c75ihpgnu3r86c2ihuv99j65odg1ll5.apps.googleusercontent.com";
+        static string ClientSecret = "iq35Y8PmRBhnGGD4HH81cxtk";
         static String APP_USER_AGENT = "Drive API Quickstart";
         static String[] SCOPES = new[] { DriveService.Scope.Drive };
         static UserCredential crede;
@@ -37,7 +37,7 @@ namespace CloudTools
         public static UserCredential GetGoogleOAuthCredential(string user, string jsonpath)
         {
 
-            String JsonFilelocation = @"C:\Users\jferrando\Documents\client_secret.json";
+            String JsonFilelocation = jsonpath;
             Google.Apis.Auth.OAuth2.UserCredential credential = null;
             using (var stream = new FileStream(JsonFilelocation, FileMode.Open,
                             FileAccess.Read))
